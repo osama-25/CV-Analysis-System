@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Query Interface</title>
+    <script>
+        async function sendQuery() {
+            const userQuery = document.getElementById("userQuery").value;
+
+            if (!userQuery) {
+                alert("Please enter a query.");
+                return;
+            }
+
+            const response = await fetch('/cv/query/', {  // Ensure this path is correct
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: userQuery }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById("response").innerText = "Response: " + data;
+            } else {
+                document.getElementById("response").innerText = "Error: " + data.error;
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h1>Query CV Data</h1>
+
+<label for="userQuery">Enter your query:</label><br>
+<input type="text" id="userQuery" placeholder="Ask about CV data"><br><br>
+
+<button onclick="sendQuery()">Send Query</button>
+
+<h2>Response:</h2>
+<p id="response"></p>
+
+</body>
+</html>
